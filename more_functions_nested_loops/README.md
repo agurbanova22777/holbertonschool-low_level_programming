@@ -1,0 +1,1 @@
+This project contains a C function that checks for an uppercase character.
