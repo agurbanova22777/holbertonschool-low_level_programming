@@ -1,64 +1,50 @@
 #include "main.h"
-#include <stddef.h> /* This line is the fix */
+#include <stddef.h>
 
 /**
  * _strstr - Locates a substring.
  * @haystack: The string to be searched.
  * @needle: The substring to find.
  *
- * Description: The function finds the first occurrence of the substring @needle
- * in the string @haystack. The terminating null bytes (\0) are not compared.
- *
  * Return: A pointer to the beginning of the located substring, or NULL
  * if the substring is not found.
  */
 char *_strstr(char *haystack, char *needle)
 {
-	char *h_ptr;
-	char *n_ptr;
+	int i, j;
 
-	/* Handle the edge case where needle is an empty string */
-	if (*needle == '\0')
-	{
+	/* If needle is empty, return haystack as per standard */
+	if (needle[0] == '\0')
 		return (haystack);
-	}
 
-	/* Outer loop: iterate through the haystack */
-	while (*haystack != '\0')
+	/* Loop through the haystack string */
+	for (i = 0; haystack[i] != '\0'; i++)
 	{
-		/*
-		 * If we find a character that matches the start of the needle,
-		 * we begin a more detailed check.
-		 */
-		if (*haystack == *needle)
+		/* If a character matches the start of the needle, start checking */
+		if (haystack[i] == needle[0])
 		{
-			h_ptr = haystack;
-			n_ptr = needle;
-
-			/*
-			 * Inner loop: check if the rest of the characters match.
-			 * We continue as long as the characters are the same and
-			 * we haven't reached the end of the needle.
-			 */
-			while (*n_ptr != '\0' && *h_ptr == *n_ptr)
+			/* j is the needle index, i+j is the haystack index */
+			for (j = 1; needle[j] != '\0'; j++)
 			{
-				h_ptr++;
-				n_ptr++;
+				/* If haystack ends or characters don't match, break */
+				if (haystack[i + j] != needle[j])
+				{
+					break;
+				}
 			}
 
 			/*
-			 * If we reached the end of the needle, it means every
-			 * character in the needle matched. We have found the substring.
+			 * If the inner loop finished because we reached the end of
+			 * the needle, it means we found a full match.
 			 */
-			if (*n_ptr == '\0')
+			if (needle[j] == '\0')
 			{
-				return (haystack); /* Return original start of the match */
+				/* Return a pointer to the start of the match */
+				return (haystack + i);
 			}
 		}
-
-		haystack++;
 	}
 
-	/* If the outer loop finishes, the needle was not found */
+	/* If the loop completes without returning, no match was found */
 	return (NULL);
 }
