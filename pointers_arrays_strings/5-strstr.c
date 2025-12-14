@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stddef.h> /* This line is the fix */
 
 /**
  * _strstr - Locates a substring.
