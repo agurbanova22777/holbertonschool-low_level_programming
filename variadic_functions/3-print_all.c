@@ -1,5 +1,6 @@
 #include "variadic_functions.h"
 #include <stdio.h>
+#include <stdarg.h>
 
 /**
  * p_char - prints a char argument
@@ -32,7 +33,7 @@ void p_float(va_list ap, char *sep)
 }
 
 /**
- * p_string - prints a string argument
+ * p_string - prints a string argument (prints (nil) if NULL)
  * @ap: variadic list
  * @sep: separator to print before the value
  */
@@ -57,21 +58,19 @@ void print_all(const char * const format, ...)
 	unsigned int i, j;
 	char *sep;
 	char types[] = "cifs";
-	void (*funcs[])(va_list, char *) = {
-		p_char, p_int, p_float, p_string
-	};
+	void (*funcs[])(va_list, char *) = {p_char, p_int, p_float, p_string};
 
 	i = 0;
 	sep = "";
 	va_start(ap, format);
 
-	while (format && format[i])
+	while (format != NULL && format[i] != '\0')
 	{
 		j = 0;
-		while (types[j] && types[j] != format[i])
+		while (types[j] != '\0' && types[j] != format[i])
 			j++;
 
-		if (types[j])
+		if (types[j] != '\0')
 		{
 			funcs[j](ap, sep);
 			sep = ", ";
