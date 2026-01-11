@@ -44,13 +44,12 @@ void p_float(va_list ap, char *sep)
 void p_string(va_list ap, char *sep)
 {
 	char *s;
+	char *out[2];
 
 	s = va_arg(ap, char *);
-	printf("%s", sep);
-	if (s == NULL)
-		printf("(nil)");
-	if (s != NULL)
-		printf("%s", s);
+	out[0] = "(nil)";
+	out[1] = s;
+	printf("%s%s", sep, out[s != NULL]);
 }
 
 /**
@@ -62,11 +61,13 @@ void p_string(va_list ap, char *sep)
 void print_all(const char * const format, ...)
 {
 	va_list ap;
-	unsigned int i = 0, j;
-	char *sep = "";
+	unsigned int i, j;
+	char *sep;
 	char types[] = "cifs";
 	void (*funcs[])(va_list, char *) = {p_char, p_int, p_float, p_string};
 
+	i = 0;
+	sep = "";
 	va_start(ap, format);
 
 	while (format && format[i])
