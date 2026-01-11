@@ -10,27 +10,36 @@
 void print_all(const char * const format, ...)
 {
 	va_list ap;
-	unsigned int i = 0;
+	unsigned int i = 0, j;
 	char *sep = "";
 	char *s;
+	char t[] = "cifs";
 
 	va_start(ap, format);
 
 	while (format != NULL && format[i] != '\0')
 	{
-		if (format[i] == 'c')
-			printf("%s%c", sep, va_arg(ap, int)), sep = ", ";
-		if (format[i] == 'i')
-			printf("%s%d", sep, va_arg(ap, int)), sep = ", ";
-		if (format[i] == 'f')
-			printf("%s%f", sep, va_arg(ap, double)), sep = ", ";
-		if (format[i] == 's')
+		j = 0;
+		while (t[j] && t[j] != format[i])
+			j++;
+
+		if (t[j])
+		{
+			printf("%s", sep);
+			sep = ", ";
+		}
+		if (t[j] == 'c')
+			printf("%c", va_arg(ap, int));
+		if (t[j] == 'i')
+			printf("%d", va_arg(ap, int));
+		if (t[j] == 'f')
+			printf("%f", va_arg(ap, double));
+		if (t[j] == 's')
 		{
 			s = va_arg(ap, char *);
-			if (s == NULL)
-				s = "(nil)";
-			printf("%s%s", sep, s), sep = ", ";
+			printf("%s", s ? s : "(nil)");
 		}
+
 		i++;
 	}
 
