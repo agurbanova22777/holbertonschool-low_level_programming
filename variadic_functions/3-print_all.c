@@ -1,8 +1,59 @@
 #include "variadic_functions.h"
 #include <stdio.h>
 
+void p_char(va_list ap, char *sep);
+void p_int(va_list ap, char *sep);
+void p_float(va_list ap, char *sep);
+void p_string(va_list ap, char *sep);
+
 /**
- * print_all - prints anything, followed by a new line
+ * p_char - prints a char argument
+ * @ap: variadic list
+ * @sep: separator to print before the value
+ */
+void p_char(va_list ap, char *sep)
+{
+	printf("%s%c", sep, va_arg(ap, int));
+}
+
+/**
+ * p_int - prints an int argument
+ * @ap: variadic list
+ * @sep: separator to print before the value
+ */
+void p_int(va_list ap, char *sep)
+{
+	printf("%s%d", sep, va_arg(ap, int));
+}
+
+/**
+ * p_float - prints a float argument
+ * @ap: variadic list
+ * @sep: separator to print before the value
+ */
+void p_float(va_list ap, char *sep)
+{
+	printf("%s%f", sep, va_arg(ap, double));
+}
+
+/**
+ * p_string - prints a string argument (prints (nil) if NULL)
+ * @ap: variadic list
+ * @sep: separator to print before the value
+ */
+void p_string(va_list ap, char *sep)
+{
+	char *s;
+	char *nil[] = {"(nil)", ""};
+
+	s = va_arg(ap, char *);
+	printf("%s%s", sep, nil[s != NULL] + (s != NULL) * 0);
+	if (s != NULL)
+		printf("%s", s);
+}
+
+/**
+ * print_all - prints anything
  * @format: list of types of arguments passed to the function
  *
  * Return: void
@@ -12,38 +63,25 @@ void print_all(const char * const format, ...)
 	va_list ap;
 	unsigned int i = 0, j;
 	char *sep = "";
-	char *s;
-	char t[] = "cifs";
+	char types[] = "cifs";
+	void (*funcs[])(va_list, char *) = {p_char, p_int, p_float, p_string};
 
 	va_start(ap, format);
 
-	while (format != NULL && format[i] != '\0')
+	while (format && format[i])
 	{
 		j = 0;
-		while (t[j] && t[j] != format[i])
+		while (types[j] && types[j] != format[i])
 			j++;
 
-		if (t[j])
+		if (types[j])
 		{
-			printf("%s", sep);
+			funcs[j](ap, sep);
 			sep = ", ";
 		}
-		if (t[j] == 'c')
-			printf("%c", va_arg(ap, int));
-		if (t[j] == 'i')
-			printf("%d", va_arg(ap, int));
-		if (t[j] == 'f')
-			printf("%f", va_arg(ap, double));
-		if (t[j] == 's')
-		{
-			s = va_arg(ap, char *);
-			printf("%s", s ? s : "(nil)");
-		}
-
 		i++;
 	}
 
 	va_end(ap);
-
 	printf("\n");
 }
