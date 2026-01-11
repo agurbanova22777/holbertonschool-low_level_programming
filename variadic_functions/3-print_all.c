@@ -44,10 +44,11 @@ void p_float(va_list ap, char *sep)
 void p_string(va_list ap, char *sep)
 {
 	char *s;
-	char *nil[] = {"(nil)", ""};
 
 	s = va_arg(ap, char *);
-	printf("%s%s", sep, nil[s != NULL] + (s != NULL) * 0);
+	printf("%s", sep);
+	if (s == NULL)
+		printf("(nil)");
 	if (s != NULL)
 		printf("%s", s);
 }
