@@ -65,7 +65,7 @@ void print_all(const char * const format, ...)
 	char *sep;
 	char types[] = "cifs";
 	void (*funcs[])(va_list, char *) = {p_char, p_int, p_float, p_string};
-
+	
 	i = 0;
 	sep = "";
 	va_start(ap, format);
