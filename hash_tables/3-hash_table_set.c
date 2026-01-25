@@ -29,7 +29,8 @@ static int update_value(hash_node_t *node, const char *value)
  *
  * Return: 1 on success, 0 on failure
  */
-static int add_node_head(hash_node_t **head, const char *key, const char *value)
+static int add_node_head(hash_node_t **head, const char *key,
+	const char *value)
 {
 	hash_node_t *node;
 
