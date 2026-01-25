@@ -22,6 +22,10 @@ ssize_t read_textfile(const char *filename, size_t letters)
     if (filename == NULL)
         return (0);
 
+    /* Check if letters is 0 */
+    if (letters == 0)
+        return (0);
+
     /* Open the file in read-only mode */
     fd = open(filename, O_RDONLY);
     if (fd == -1)
@@ -52,7 +56,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
     close(fd);
 
     /* Check if write succeeded and wrote all bytes */
-    if (bytes_written == -1 || bytes_written != bytes_read)
+    if (bytes_written != bytes_read)
         return (0);
 
     return (bytes_written);
