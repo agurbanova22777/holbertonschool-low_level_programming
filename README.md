@@ -1,1 +1,0 @@
-learning permissions# holbertonschool-low_level_programming
